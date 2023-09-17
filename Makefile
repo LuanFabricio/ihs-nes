@@ -2,7 +2,7 @@ CA=ca65
 LD=ld65
 
 FILENAME=main
-LD_FLAGS=--target nes
+LD_FLAGS=-v --target nes
 
 all:
 	$(CA) $(FILENAME).asm

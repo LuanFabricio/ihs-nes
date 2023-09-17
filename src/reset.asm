@@ -13,11 +13,6 @@
 vblank_wait:
 	bit PPUSTATUS
 	bpl vblank_wait
-
-	lda #%10000000
-	sta PPUCTRL
-	lda #%00011110
-	sta PPUMASK
 clear_memory:
 	lda #$00
 	sta $0000, x

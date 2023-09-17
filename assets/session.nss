@@ -31,7 +31,7 @@ MenuSaveRLE=0
 VarTileViewTagBuf=0
 VarBgPalCur=0
 VarPalActive=0
-VarTileActive=6
+VarTileActive=0
 VarBankActive=4096
 VarPPUMask=0
 VarPPUMaskSet0=0
@@ -48,13 +48,13 @@ VarNameH=30
 VarNameViewX=0
 VarNameViewY=-1
 VarNameSelectionL=-1
-VarNameSelectionR=13
+VarNameSelectionR=20
 VarNameSelectionT=-1
-VarNameSelectionB=9
-VarNameCopyW=-1
-VarNameCopyH=-1
-VarCHRSelectionL=6
-VarCHRSelectionR=7
+VarNameSelectionB=19
+VarNameCopyW=7
+VarNameCopyH=7
+VarCHRSelectionL=0
+VarCHRSelectionR=1
 VarCHRSelectionT=0
 VarCHRSelectionB=1
 VarCHRCopyW=1
@@ -67,40 +67,40 @@ VarCheckpoint_CHRBanks=4
 VarCheckpoint_CHRBanksUndo=4
 
 
-VarCHRSelected=00[6]0100[f9]
+VarCHRSelected=0100[ff]
 
 
-Palette=0f0010300f0121310f0616260f0919290f1121310f1222320f1323330f1424340f1525350f1626360f1727370f1828380f1929390f1a2a3a0f1b2b3b0f1c2c3c
+Palette=0f0010200f0121310f0616260f0919290f1121310f1222320f1323330f1424340f1525350f1626360f1727370f1828380f1929390f1a2a3a0f1b2b3b0f1c2c3c
 
 
-PalUndo=0f0010300f0121310f0616260f0919290f1121310f1222320f1323330f1424340f1525350f1626360f1727370f1828380f1929390f1a2a3a0f1b2b3b0f1c2c3c
+PalUndo=0f0010200f0121310f0616260f0919290f1121310f1222320f1323330f1424340f1525350f1626360f1727370f1828380f1929390f1a2a3a0f1b2b3b0f1c2c3c
 
 
-CHRMain=00[10]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[fa6]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[f96]
+CHRMain=00[10]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[f00]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[ef0]
 
 
-CHRCopy=00[8]ff[2]00[ff6]
+CHRCopy=ff[8]00[ff8]
 
 
-CHRUndo=00[10]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[fa6]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[fa0]
+CHRUndo=00[10]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[ef0]ff[8]00[8]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[ef0]
 
 
-NameTable=06[f]00[2]0600[2]0600[2]0600[2]0600[2]06000605[6]00[2]050005[6]00[12]cd00[a]cd00[14]cd00[a]cd[2]00[13]cd00[b]cd[2]00[12]cd00[d]cd00[11]cd00[e]cd[2]00[f]cd00[f]cd00[c]cd00[2]cd00[9]0406[2]00[f]cd[2]00[2]cd00[9]050100[6]cd00[8]cd[2]00[3]cd00[19]cd[2]00[4]cd00[b]0600[13]cd[7]00[2e]cd00[81]cd00[1f]cd00[20]cd00[1f]cd00[20]cd00[1f]cd00[20]cd00[1f]cd00[20]cd00[1f]cd00[41]cd00[20]
+NameTable=00[16f]090b0a00[1d]090b0a00[1d]090b0a00[1d]090b0aff00[1c]090b0aff00[1a]1000040607001000[19]06[7]00[5f]6400[12c]
 
 
-NameCopy=00[3c0]
+NameCopy=00[2]090b0a00[4]090b0a00[4]090b0a00[4]090b0aff00[3]090b0aff[2]1000040607001006[7]00[38f]
 
 
-NameUndo=06[f]00[2]0600[2]0600[2]0600[2]0600[2]06000605[6]00[2]050005[6]00[12]cd00[a]cd00[14]cd00[a]cd[2]00[13]cd00[b]cd[2]00[12]cd00[d]cd00[11]cd00[e]cd[2]00[f]cd00[f]cd00[c]cd00[2]cd00[9]0406[2]00[f]cd[2]00[2]cd00[9]050100[6]cd00[8]cd[2]00[3]cd00[19]cd[2]00[4]cd00[b]0600[13]cd[7]00[2e]cd00[81]cd00[1f]cd00[20]cd00[1f]cd00[20]cd00[1f]cd00[20]cd00[1f]cd00[20]cd00[1f]cd00[41]cd00[20]
+NameUndo=00[16f]090b0a00[1d]090b0a00[1d]090b0a00[1d]090b0aff00[1c]090b0aff00[1a]1000040607001000[19]06[7]00[5f]6400[12c]
 
 
-AttrTable=00[40]
+AttrTable=00[22]0a[3]00[1b]
 
 
-AttrCopy=00[40]
+AttrCopy=00[23]02[e]00[f]
 
 
-AttrUndo=00[40]
+AttrUndo=00[22]0a[3]00[1b]
 
 
 MetaSprites=3c05003cff[fffc]
@@ -180,8 +180,8 @@ MetaSpriteBankName=session
 
 FilterCHR=1
 FilterName=1
-FileNameCHR=Z:\home\luan\dev\meus-projetos\card-nes\assets\graphics
-FileNameName=Z:\home\luan\dev\meus-projetos\card-nes\assets\nametable
+FileNameCHR=Z:\home\luan\dev\ihs-nes\assets\graphics
+FileNameName=Z:\home\luan\dev\ihs-nes\assets\nametable
 FileNamePal=Z:\home\luan\dev\meus-projetos\card-nes\assets\palettes
 FileNameMetaSpriteBank=
-FileNameTileProps=
+FileNameTileProps=Z:\home\luan\dev\ihs-nes\assets\tile-prop

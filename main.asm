@@ -39,99 +39,29 @@
 	ldx #$00
 	stx PPUADDR
 
-	ldx #$00
 	load_palette:
 		lda palette, x
 		sta PPUDATA
 		inx
-		cpx #$10
+		cpx #$20
 		bne load_palette
 
 	;; writing a sprite into ram
-	lda PPUSTATUS
-	lda #$6f
-	sta $0200
-	lda #$04
-	sta $0201
-	lda #$00
-	sta $0202
-	lda #$88
-	sta $0203
-
-	lda #$77
-	sta $0204
-	lda #$05
-	sta $0205
-	lda #$00
-	sta $0206
-	lda #$88
-	sta $0207
-
-	;; loading background
-	;; setting up background
-	lda PPUSTATUS
-	lda #$21
-	sta PPUADDR
-	lda #$57
-	sta PPUADDR
-	ldx #$04
-	stx PPUDATA
-
-	lda PPUSTATUS
-	lda #$20
-	sta PPUADDR
-	lda #$57
-	sta PPUADDR
-	ldx #$04
-	stx PPUDATA
-
-	lda PPUSTATUS
-	lda #$20
-	sta PPUADDR
-	lda #$00
-	sta PPUADDR
-	ldx #$02
-	stx PPUDATA
-
-	lda PPUSTATUS
-	lda #$20
-	sta PPUADDR
-	lda #$00
-	sta PPUADDR
-
 	ldx #$00
-	load_background1:
-		lda nametable, x
-		sta PPUDATA
+	load_sprites:
+		lda sprites, x
+		sta $0200, x
 		inx
-		cpx #$00
-		bne load_background1
+		cpx #$08
+		bne load_sprites
 
-	load_background2:
-		lda nametable+$100, x
-		sta PPUDATA
-		inx
-		cpx #$00
-		bne load_background2
+	jsr load_background
 
-	load_background3:
-		lda nametable+$200, x
-		sta PPUDATA
-		inx
-		cpx #$00
-		bne load_background3
-
-	load_background4:
-		lda nametable+$300, x
-		sta PPUDATA
-		inx
-		cpx #$00
-		bne load_background4
 vblankwait:
 	bit PPUSTATUS
 	BPL vblankwait
 
-	lda #%10000000
+	lda #%10010000
 	sta PPUCTRL
 	lda #%00011110
 	sta PPUMASK
@@ -140,9 +70,21 @@ forever:
 	jmp forever
 .endproc
 
-.segment "RODATA"
-nametable:
-.incbin "assets/nametable.nam"
+.import load_background
 
+.segment "RODATA"
 palette:
-.incbin "assets/palettes.pal"
+	.byte $0f, $00, $10, $20
+	.byte $0f, $01, $21, $31
+	.byte $0f, $06, $16, $26
+	.byte $0f, $09, $19, $29
+
+	.byte $0f, $00, $10, $20
+	.byte $0f, $01, $21, $31
+	.byte $0f, $06, $16, $26
+	.byte $0f, $09, $19, $29
+;; .incbin "assets/palettes.pal"
+
+sprites:
+	.byte $6f, $01, %00000001, $88
+	.byte $09, $02, %00000011, $88

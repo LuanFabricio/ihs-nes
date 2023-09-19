@@ -9,7 +9,9 @@ all:
 	$(CA) src/reset.asm
 	$(CA) src/background.asm
 	$(CA) src/player.asm
-	$(LD) src/reset.o $(FILENAME).o src/background.o src/player.o $(LD_FLAGS) -o $(FILENAME).nes
+	$(CA) src/enemy.asm
+	$(CA) src/game_rules.asm
+	$(LD) src/reset.o $(FILENAME).o src/background.o src/player.o src/enemy.o src/game_rules.o $(LD_FLAGS) -o $(FILENAME).nes
 
 run:
 	make

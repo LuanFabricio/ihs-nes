@@ -6,3 +6,5 @@ PPUADDR         = $2006
 PPUDATA         = $2007
 OAMADDR         = $2003
 OAMDMA          = $4014
+
+JOY1		= $4016

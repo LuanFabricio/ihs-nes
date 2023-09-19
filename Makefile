@@ -8,7 +8,8 @@ all:
 	$(CA) $(FILENAME).asm
 	$(CA) src/reset.asm
 	$(CA) src/background.asm
-	$(LD) src/reset.o $(FILENAME).o src/background.o $(LD_FLAGS) -o $(FILENAME).nes
+	$(CA) src/player.asm
+	$(LD) src/reset.o $(FILENAME).o src/background.o src/player.o $(LD_FLAGS) -o $(FILENAME).nes
 
 run:
 	make

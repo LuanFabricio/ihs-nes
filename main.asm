@@ -25,6 +25,8 @@
 	sta PPUSCROLL
 	sta PPUSCROLL
 
+	jsr move_player
+
 	rti
 .endproc
 
@@ -32,6 +34,10 @@
 
 .export main
 .proc main
+	;; set player move flag to zero
+	ldx #$00
+	sta $0000
+
 	;; loading palette
 	ldx PPUSTATUS
 	ldx #$3f
@@ -71,6 +77,7 @@ forever:
 .endproc
 
 .import load_background
+.import move_player
 
 .segment "RODATA"
 palette:
@@ -87,4 +94,6 @@ palette:
 
 sprites:
 	.byte $6f, $01, %00000001, $88
-	.byte $09, $02, %00000011, $88
+	; .byte $5f, $03, %00000010, $88
+	; .byte $67, $03, %00000010, $88
+	.byte $5f, $01, %00000011, $88

@@ -25,8 +25,23 @@
 	sta PPUSCROLL
 	sta PPUSCROLL
 
+	jsr check_player_win
+	lda $00
+	and #%10000000
+	beq check_turn
+	rti
+
+check_turn:
+	lda $00
+	and #$01
+	beq lbl_move_player
+lbl_move_enemy:
+	jsr move_enemy
+	jmp nmi_end
+lbl_move_player:
 	jsr move_player
 
+nmi_end:
 	rti
 .endproc
 
@@ -34,9 +49,15 @@
 
 .export main
 .proc main
-	;; set player move flag to zero
-	ldx #$00
-	sta $0000
+	;; set game flags to zero
+	lda #$00
+	sta $00
+	;; set enemy count to one
+	lda #$01
+	sta $01
+	;; set player move delay to zero
+	lda #$00
+	sta $02
 
 	;; loading palette
 	ldx PPUSTATUS
@@ -78,6 +99,8 @@ forever:
 
 .import load_background
 .import move_player
+.import move_enemy
+.import check_player_win
 
 .segment "RODATA"
 palette:

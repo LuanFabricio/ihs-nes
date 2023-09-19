@@ -29,9 +29,9 @@ MenuSaveIncName=1
 MenuSaveIncAttr=1
 MenuSaveRLE=0
 VarTileViewTagBuf=0
-VarBgPalCur=2
-VarPalActive=0
-VarTileActive=3
+VarBgPalCur=1
+VarPalActive=1
+VarTileActive=1
 VarBankActive=0
 VarPPUMask=0
 VarPPUMaskSet0=0
@@ -53,8 +53,8 @@ VarNameSelectionT=-1
 VarNameSelectionB=19
 VarNameCopyW=7
 VarNameCopyH=7
-VarCHRSelectionL=3
-VarCHRSelectionR=4
+VarCHRSelectionL=1
+VarCHRSelectionR=2
 VarCHRSelectionT=0
 VarCHRSelectionB=1
 VarCHRCopyW=1
@@ -67,7 +67,7 @@ VarCheckpoint_CHRBanks=4
 VarCheckpoint_CHRBanksUndo=4
 
 
-VarCHRSelected=00[3]0100[fc]
+VarCHRSelected=000100[fe]
 
 
 Palette=0f0010200f0121310f0616260f0919290f1121310f1222320f1323330f1424340f1525350f1626360f1727370f1828380f1929390f1a2a3a0f1b2b3b0f1c2c3c
@@ -76,13 +76,13 @@ Palette=0f0010200f0121310f0616260f0919290f1121310f1222320f1323330f1424340f152535
 PalUndo=0f0010200f0121310f0616260f0919290f1121310f1222320f1323330f1424340f1525350f1626360f1727370f1828380f1929390f1a2a3a0f1b2b3b0f1c2c3c
 
 
-CHRMain=00[10]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[f00]ff[10]00[8]ff[8]3c[3]18[2]3cff[2]00[10]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[ef0]
+CHRMain=00[10]38[3]18387cfeff04[3]0004020100[9]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[f00]ff[10]00[8]ff[8]3c[3]18[2]3cff[2]00[10]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[ef0]
 
 
-CHRCopy=ff[10]00[ff0]
+CHRCopy=38[3]18387cfeff04[3]0004020100[ff1]
 
 
-CHRUndo=00[10]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[f00]ff[10]00[8]ff[8]00[18]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[ef0]
+CHRUndo=00[10]ff[8]00[10]ff[18]00[8]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[f00]ff[10]00[8]ff[8]3c[3]18[2]3cff[2]00[10]ff[2]c0[6]00[8]c0[8]00[8]ff[2]00[e]ff[2]03[6]00[e]ff[2]00[8]ff[2]c1[6]00[8]ff[2]83[6]00[8]ff[2]81[6]00[42]3c0042[2]81[2]187e427ebd[2]7e[2]00[ef0]
 
 
 NameTable=00[12b]010201020102010200[18]020102010201020100[18]010201020102010200[18]020102010201020100[18]010201020102010200[18]020102010201020100[18]010201020102010200[18]020102010201020100[80]6400[12c]
@@ -180,7 +180,7 @@ MetaSpriteBankName=session
 
 FilterCHR=1
 FilterName=1
-FileNameCHR=Z:\home\luan\dev\ihs-nes\assets\graphics
+FileNameCHR=Z:\home\luan\dev\meus-projetos\card-nes\assets\graphics
 FileNameName=Z:\home\luan\dev\ihs-nes\assets\nametable
 FileNamePal=Z:\home\luan\dev\meus-projetos\card-nes\assets\palettes
 FileNameMetaSpriteBank=

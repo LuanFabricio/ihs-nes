@@ -3,12 +3,10 @@
 .segment "CODE"
 .export move_player
 .proc move_player
-read_input:
-	lda $0000
-	cmp #$0f
-	bmi setup_read
-reset_and_end:
-	dec $0000
+	lda $02
+	cmp #$11
+	beq setup_read
+	inc $02
 	jmp end
 
 setup_read:
@@ -29,18 +27,21 @@ setup_read:
 	;; Reading BTN Start
 	lda JOY1
 
+read_btn_up:
 	;; Reading BTN Up
 	lda JOY1
 	and #$01
 	beq read_btn_down
 	jsr move_up
+	jmp set_move_delay
 
-	;; Reading BTN Down
 read_btn_down:
+	;; Reading BTN Down
 	lda JOY1
 	and #$01
 	beq read_btn_left
 	jsr move_down
+	jmp set_move_delay
 
 read_btn_left:
 	;; Reading BTN Left
@@ -48,6 +49,7 @@ read_btn_left:
 	and #$01
 	beq read_btn_right
 	jsr move_left
+	jmp set_move_delay
 
 read_btn_right:
 	;; Reading BTN Right
@@ -56,6 +58,13 @@ read_btn_right:
 	beq end
 	jsr move_right
 
+set_move_delay:
+	lda #$00
+	sta $02
+change_turn:
+	lda $00
+	ora #$01
+	sta $00
 end:
 	rts
 .endproc
@@ -69,9 +78,6 @@ end:
 	clc
 	sbc #$07
 	sta $0200
-
-	ldx #$ff
-	sta $0000
 
 move_up_end:
 	rts
@@ -87,9 +93,6 @@ move_up_end:
 	adc #$08
 	sta $0200
 
-	ldx #$ff
-	sta $0000
-
 move_down_end:
 	rts
 .endproc
@@ -104,9 +107,6 @@ move_down_end:
 	sbc #$07
 	sta $0203
 
-	ldx #$ff
-	sta $0000
-
 move_left_end:
 	rts
 .endproc
@@ -120,9 +120,6 @@ move_left_end:
 	clc
 	adc #$08
 	sta $0203
-
-	ldx #$ff
-	sta $0000
 
 move_right_end:
 	rts

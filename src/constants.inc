@@ -8,3 +8,4 @@ OAMADDR         = $2003
 OAMDMA          = $4014
 
 JOY1		= $4016
+JOY2		= $4017

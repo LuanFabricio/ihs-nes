@@ -55,9 +55,12 @@ nmi_end:
 	;; set enemy count to one
 	lda #$01
 	sta $01
-	;; set player move delay to zero
+	;; set player 1 move delay to zero
 	lda #$00
 	sta $02
+	;; set player 2 move delay to zero
+	lda #$00
+	sta $03
 
 	;; loading palette
 	ldx PPUSTATUS

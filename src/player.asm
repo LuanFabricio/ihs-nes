@@ -55,7 +55,7 @@ read_btn_right:
 	;; Reading BTN Right
 	lda JOY1
 	and #$01
-	beq end
+	beq change_turn
 	jsr move_right
 
 set_move_delay:

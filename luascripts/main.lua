@@ -8,10 +8,20 @@ local test_input = {
 	right = true,
 
 }
+local inputs = {
+	{ right = true },
+	{ left = true },
+	{ up = true },
+	{ down = true },
+}
 
 local x = memory.readbyte(MEMORY.board.player.x)
 while(true) do
-	joypad.set(1, test_input)
+	-- p1_input = math.random(4)
+	-- joypad.set(1, inputs[p1_input])
+	p2_input = math.random(4)
+	joypad.set(2, inputs[p2_input])
+	print("joypad2", joypad.readdown(2))
 	-- x = x + 8
 	-- memory.writebyte(MEMORY.board.player.x, x)
 	-- gui.text(50, 50, "Hello world")

@@ -15,4 +15,4 @@ all:
 
 run:
 	make
-	fceux $(FILENAME).nes
+	fceux --loadlua luascripts/main.lua $(FILENAME).nes

@@ -15,15 +15,15 @@ local inputs = {
 	{ down = true },
 }
 
-local x = memory.readbyte(MEMORY.board.player.x)
+-- local x = memory.readbyte(MEMORY.board.player.x)
+
+local p_input = math.random(4)
 while(true) do
-	-- p1_input = math.random(4)
-	-- joypad.set(1, inputs[p1_input])
-	p2_input = math.random(4)
-	joypad.set(2, inputs[p2_input])
-	print("joypad2", joypad.readdown(2))
-	-- x = x + 8
-	-- memory.writebyte(MEMORY.board.player.x, x)
+	joypad.set(1, inputs[p_input])
+	p_input = math.random(4)
+	joypad.set(2, inputs[p_input])
+	p_input = math.random(4)
+	-- print("joypad2", joypad.readdown(2))
 	-- gui.text(50, 50, "Hello world")
 	emu.frameadvance()
 end

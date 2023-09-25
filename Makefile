@@ -16,3 +16,6 @@ all:
 run:
 	make
 	fceux --loadlua luascripts/main.lua $(FILENAME).nes
+
+test-scripts:
+	cd luascripts; busted tests/*/*

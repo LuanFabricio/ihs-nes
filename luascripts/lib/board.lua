@@ -1,5 +1,9 @@
 require "lib/mem_addr"
 
+if bit == nil then
+	bit = require("bit")
+end
+
 local function knight_variations()
 	local variations = { {-1, 2}, {1, 2}, {2, -1}, {2, 1}, {1, -2}, {-1, -2}, {-2, 1}, { -2, -1} }
 
@@ -98,9 +102,6 @@ function Board:move_piece_to(memory, piece_index, x, y)
 end
 
 function Board:can_move_piece_to(is_player, piece_type, piece_x, piece_y, target_x, target_y)
-	print('piece_type: ', piece_type)
-	print('piece_pos: ', piece_x .. ', ', piece_y)
-	print('target_pos: ', target_x, ', ', target_y)
 	local is_valid_type = piece_type > 6 or piece_type <= 0
 	if is_valid_type then
 		return false
@@ -117,8 +118,6 @@ function Board:can_move_piece_to(is_player, piece_type, piece_x, piece_y, target
 
 	local list_variations = moves_table[piece_type](is_player)
 	local avaliable_positions = get_avaliable_positions(list_variations, piece_x, piece_y)
-
-	print("avaliable_positions: ", avaliable_positions)
 
 	for i = 1, #avaliable_positions, 1 do
 		local current_move_x = avaliable_positions[i][1]
@@ -184,8 +183,6 @@ function Board:get_piece_from(memory, x, y)
 	local piece_type = 0
 	local board_x = bit.rshift(x - 0x58, 3) + 1
 	local board_y = bit.rshift(y - 0x47, 3) + 1
-	print("x: ", board_x)
-	print("y: ", board_y)
 
 	SIZE = 8
 	local piece_addr = MEMORY.board.pieces_start

@@ -1,0 +1,6 @@
+CONSTANTS = {
+	X_PADDING = 0x58,
+	Y_PADDING = 0x47,
+}
+
+return CONSTANTS

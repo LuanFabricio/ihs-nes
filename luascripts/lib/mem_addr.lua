@@ -6,6 +6,8 @@ MEMORY = {
 			attr = 0x0202,
 			x = 0x0203,
 		},
+		pieces_start = 0x0204,
+		pieces_len = 5
 	}
 }
 

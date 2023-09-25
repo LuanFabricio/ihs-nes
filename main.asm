@@ -36,7 +36,7 @@ check_turn:
 	and #$01
 	beq lbl_move_player
 lbl_move_enemy:
-	jsr move_enemy
+	; jsr move_enemy
 	jmp nmi_end
 lbl_move_player:
 	jsr move_player
@@ -82,7 +82,7 @@ nmi_end:
 		lda sprites, x
 		sta $0200, x
 		inx
-		cpx #$08
+		cpx #$1c
 		bne load_sprites
 
 	jsr load_background
@@ -122,4 +122,9 @@ sprites:
 	.byte $6f, $01, %00000001, $88
 	; .byte $5f, $03, %00000010, $88
 	; .byte $67, $03, %00000010, $88
-	.byte $5f, $01, %00000011, $88
+	.byte $77, $01, %00000011, $58
+	.byte $6f, $02, %00000011, $80
+	.byte $6f, $03, %00000011, $78
+	.byte $5f, $04, %00000011, $68
+	.byte $5f, $06, %00000011, $58
+	.byte $5f, $05, %00000011, $70

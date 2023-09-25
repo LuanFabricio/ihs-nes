@@ -95,9 +95,10 @@ local function get_piece_addr(piece_index)
 	return MEMORY.board.pieces_start + piece_index * 4
 end
 
-Board = {}
+Board = {
+	is_player_turn = true
+}
 Board.__index = Board
-
 function Board:move_piece_to(memory, piece_index, x, y)
 	local piece_mem = get_piece_addr(piece_index)
 
@@ -113,7 +114,7 @@ end
 
 function Board:can_move_piece_to(is_player, piece_type, piece_x, piece_y, target_x, target_y)
 	local is_valid_type = piece_type > 6 or piece_type <= 0
-	if is_valid_type then
+	if is_valid_type or not Board.is_player_turn then
 		return false
 	end
 
@@ -133,11 +134,17 @@ function Board:can_move_piece_to(is_player, piece_type, piece_x, piece_y, target
 		local current_move_x = avaliable_positions[i][1]
 		local current_move_y = avaliable_positions[i][2]
 		if current_move_x == target_x and current_move_y == target_y then
+			Board.is_player_turn = false
 			return true
 		end
 	end
 
 	return false
+end
+
+function Board:AI_move()
+	-- .. do something
+	Board.is_player_turn = true
 end
 
 -- TODO: remover

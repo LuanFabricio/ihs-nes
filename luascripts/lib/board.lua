@@ -91,14 +91,24 @@ local function get_avaliable_positions(variations, x, y)
 	return moves
 end
 
+local function get_piece_addr(piece_index)
+	return MEMORY.board.pieces_start + piece_index * 4
+end
+
 Board = {}
 Board.__index = Board
 
 function Board:move_piece_to(memory, piece_index, x, y)
-	local piece_mem = MEMORY.board.pieces_start + piece_index * 4;
+	local piece_mem = get_piece_addr(piece_index)
 
 	memory.writebyte(piece_mem, x)
 	memory.writebyte(piece_mem + 3, y)
+end
+
+function Board:set_piece_attribute(memory, piece_index, attribute_byte)
+	local piece_mem = get_piece_addr(piece_index)
+
+	memory.writebyte(piece_mem + 2, attribute_byte)
 end
 
 function Board:can_move_piece_to(is_player, piece_type, piece_x, piece_y, target_x, target_y)

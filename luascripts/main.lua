@@ -29,18 +29,22 @@ local current_piece = {
 -- board:draw_possible_moves(memory, true, 1, 3, 3)
 -- board:draw_possible_moves(memory, true, 4, 4, 6)
 
+Board.copy_in_game_board()
+Board.save_memory_board()
+
+os.execute("cd ../ai; python ai.py")
+
 -- local p_input = math.random(4)
 while(true) do
 	local mouse = zapper.read()
 
 	if not Board.is_player_turn then
 		Board:AI_move()
-	else
-		if mouse.fire == 1 then
+	else if mouse.fire == 1 then
 			print("CURRENT_PIECE: ", current_piece)
 			print("is_player_turn: ", Board.is_player_turn)
 			local piece_type, board_x, board_y, piece_index = board:get_piece_from(memory, mouse.x, mouse.y)
-			if piece_type ~= 0 and current_piece.index == 0 then
+			if piece_type ~= 0 then
 				current_piece.index = piece_index
 				current_piece.type = piece_type
 				current_piece.x = board_x

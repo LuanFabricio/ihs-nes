@@ -28,6 +28,11 @@ class AI:
         for move in move_arr:
             if len(move) == 4:
                 self.save_move(move)
+                print(self.ai_chess.board)
+                print("="*15)
+                self.ai_chess.makeChessMove(move)
+                print(self.ai_chess.board)
+                break
 
     def save_move(self, move):
         assert(len(move) == 4)

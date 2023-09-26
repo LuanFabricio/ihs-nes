@@ -1,4 +1,5 @@
 require "lib/mem_addr"
+require "lib/constants"
 
 if bit == nil then
 	bit = require("bit")
@@ -96,7 +97,8 @@ local function get_piece_addr(piece_index)
 end
 
 Board = {
-	is_player_turn = true
+	is_player_turn = true,
+	board = nil,
 }
 Board.__index = Board
 function Board:move_piece_to(memory, piece_index, x, y)
@@ -145,6 +147,72 @@ end
 function Board:AI_move()
 	-- .. do something
 	Board.is_player_turn = true
+end
+
+function Board:copy_in_game_board()
+	local piece_addr = MEMORY.board.pieces_start
+
+	Board.board = {
+		{}, {}, {}, {}, {}, {}, {}, {},
+	}
+
+	for _=1, MEMORY.board.pieces_len, 1 do
+		local y = memory.readbyte(piece_addr)
+		piece_addr = piece_addr + 1
+		local piece_type = memory.readbyte(piece_addr)
+		piece_addr = piece_addr + 1
+		local color = bit.band(memory.readbyte(piece_addr), 0x03)
+		piece_addr = piece_addr + 1
+		local x = memory.readbyte(piece_addr)
+		piece_addr = piece_addr + 1
+
+		local board_x = bit.rshift(x - CONSTANTS.X_PADDING, 3) + 1
+		local board_y = bit.rshift(y - CONSTANTS.Y_PADDING, 3) + 1
+		local color_index = bit.rshift(color, 1) + 1
+		Board.board[board_y][board_x] = { piece_type, color_index }
+	end
+
+	print("result=", Board.board)
+end
+
+function Board:save_memory_board()
+	local conversion_table = {
+		[1] = { "p", "P" },
+		[2] = { "b", "B" },
+		[3] = { "n", "N" },
+		[4] = { "r", "R" },
+		[5] = { "q", "Q" },
+		[6] = { "k", "K" },
+	}
+	local file_string = ""
+	for i=1, 8, 1 do
+		local empty = 0
+		for j=1, 8, 1 do
+			local piece_set = Board.board[i][j]
+			if piece_set == nil then
+				empty = empty + 1
+			else
+				if empty > 0 then
+					file_string = file_string ..empty
+					empty = 0
+				end
+				file_string = file_string .. conversion_table[piece_set[1]][piece_set[2]]
+			end
+		end
+		if empty > 0 then
+			file_string = file_string .. empty
+		end
+		if i ~= 8 then
+			file_string = file_string .. "/"
+		end
+	end
+
+	local filename = "../ai/board.in"
+	local file = io.open(filename, "w")
+	io.output(file)
+	io.write(file_string)
+	io.close(file)
+	print(file_string)
 end
 
 -- TODO: remover

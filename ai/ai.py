@@ -36,11 +36,14 @@ class AI:
 
     def save_move(self, move):
         assert(len(move) == 4)
+        print(f"move: {move}")
         BASE_CHAR = ord('a')
         file = open("chess.out", "w")
         char_list = list(move)
         char_list[0] = str(ord(char_list[0]) - BASE_CHAR + 1)
+        char_list[1] = str(9 - int(char_list[1]))
         char_list[2] = str(ord(char_list[2]) - BASE_CHAR + 1)
+        char_list[3] = str(9 - int(char_list[3]))
         file.write(''.join(char_list))
         file.close()
 

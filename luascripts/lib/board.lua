@@ -146,12 +146,25 @@ end
 
 function Board:AI_move()
 	-- .. do something
+	Board.copy_in_game_board()
+	Board.save_memory_board()
+	os.execute("cd ../ai; python ai.py")
+	-- os.execute("cd ../ai; cat chess.out")
+
+	local run_ai = "cd ../ai; cat chess.out"
+	local handle = io.popen(run_ai)
+	if handle ~= nil then
+		local result = handle:read("*a")
+		handle:close()
+		Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
+	end
 	Board.is_player_turn = true
 end
 
 function Board:copy_in_game_board()
-	print("copy_in_game_board: ", MEMORY.board.pieces_len)
+	-- print("copy_in_game_board: ", MEMORY.board.pieces_len)
 
+	print("piece_len: ", MEMORY.board.pieces_len)
 	local piece_addr = MEMORY.board.pieces_start
 
 	Board.board = {
@@ -171,14 +184,14 @@ function Board:copy_in_game_board()
 		local board_x = bit.rshift(x - CONSTANTS.X_PADDING, 3) + 1
 		local board_y = bit.rshift(y - CONSTANTS.Y_PADDING, 3) + 1
 		local color_index = bit.rshift(color, 1) + 1
-		print(x, y)
-		print(board_x, board_y)
+		-- print(x, y)
+		-- print(board_x, board_y)
 		if piece_type >= 1 and piece_type <= 6 then
 			Board.board[board_y][board_x] = { piece_type, color_index }
 		end
 	end
 
-	print("result=", Board.board)
+	-- print("result=", Board.board)
 end
 
 function Board:save_memory_board()
@@ -202,7 +215,7 @@ function Board:save_memory_board()
 					file_string = file_string ..empty
 					empty = 0
 				end
-				print("piece_set: ", piece_set)
+				-- print("piece_set: ", piece_set)
 				file_string = file_string .. conversion_table[piece_set[1]][piece_set[2]]
 			end
 		end
@@ -237,33 +250,38 @@ function Board:move_in_board_piece_to(memory, from, to)
 	local to_y = tonumber(to:sub(1, 1)) - 1
 	to_y = bit.lshift(to_y, 3) + CONSTANTS.X_PADDING
 
-	print("to: ", to_x , to_y)
-
 	local _, _, _, other_piece_index = Board:get_piece_from(memory, to_y, to_x)
-	print("other_piece_index: ", other_piece_index)
 	if other_piece_index ~= 0 then
-		print("other_piece_index:", other_piece_index)
-		Board:kill_piece(memory, other_piece_index-1)
+		Board:kill_piece(memory, other_piece_index-1, MEMORY.board.pieces_len)
 	end
 
 	Board:move_piece_to(memory, index - 1, to_x, to_y)
 end
 
-function Board:kill_piece(memory, index)
+function Board:kill_piece(memory, index, pieces_len)
 	local piece_addr = get_piece_addr(index)
-	local last_piece_addr = get_piece_addr(MEMORY.board.pieces_len-1)
+	local last_piece_addr = get_piece_addr(pieces_len-1)
+
+	MEMORY.board.pieces_len = MEMORY.board.pieces_len - 1
+
+	if index == pieces_len-1 then
+		for _ = 1, 4, 1 do
+			memory.writebyte(last_piece_addr, 0x00)
+			last_piece_addr = last_piece_addr + 1
+		end
+		return
+	end
 
 	-- swap last_position and index_piece
-	for _=1, 3, 1 do
-		print("kill: ", piece_addr)
-		print("replace: ", last_piece_addr)
+	for _=1, 4, 1 do
 		local last_piece = memory.readbyte(last_piece_addr)
 		memory.writebyte(piece_addr, last_piece)
+		-- the memory api have some delay to execute
+		os.execute("sleep 0.25")
 		memory.writebyte(last_piece_addr, 0x00)
 		last_piece_addr = last_piece_addr + 1
 		piece_addr = piece_addr + 1
 	end
-	MEMORY.board.pieces_len = MEMORY.board.pieces_len - 1
 end
 
 -- TODO: remover
@@ -331,9 +349,6 @@ function Board:get_piece_from(memory, x, y)
 		piece_addr = piece_addr + 2
 		local piece_x = memory.readbyte(piece_addr)
 		piece_addr = piece_addr + 1
-
-		print("get_piece_from")
-		print(piece_x, piece_y)
 
 		local is_x_ok = piece_x <= x and x < (piece_x + SIZE)
 		local is_y_ok = piece_y <= y and y < (piece_y + SIZE)

@@ -32,15 +32,15 @@ local current_piece = {
 Board.copy_in_game_board()
 Board.save_memory_board()
 os.execute("cd ../ai; python ai.py")
-os.execute("cd ../ai; cat chess.out")
+-- os.execute("cd ../ai; cat chess.out")
 
-local run_ai = "cd ../ai; cat chess.out"
-local handle = io.popen(run_ai)
-local result = handle:read("*a")
-handle:close()
-print(result)
-Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
-Board.copy_in_game_board()
+-- local run_ai = "cd ../ai; cat chess.out"
+-- local handle = io.popen(run_ai)
+-- local result = handle:read("*a")
+-- handle:close()
+-- print(result)
+-- Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
+-- Board.copy_in_game_board()
 
 -- local p_input = math.random(4)
 while(true) do

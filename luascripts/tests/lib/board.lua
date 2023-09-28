@@ -34,6 +34,20 @@ describe('move_piece_to: Should move a piece', function ()
 		assert(mem_x == x)
 		assert(mem_y == y)
 	end)
+
+	it("Should move piece 1 to (0x50, 0x42)", function ()
+		piece_index = 1
+		local x, y = 0x50, 0x42
+
+		Board:move_piece_to(memory, piece_index, x, y)
+
+		local address = MEMORY.board.pieces_start + piece_index * 4
+		local mem_y = memory.readbyte(address)
+		local mem_x = memory.readbyte(address + 3)
+
+		assert(mem_x == x)
+		assert(mem_y == y)
+	end)
 end)
 
 describe("set_piece_attribute", function ()
@@ -355,21 +369,28 @@ describe("move_in_board_piece_to", function ()
 	it("Should move a piece by board position", function ()
 		MEMORY_ARR = {
 			-- Rook (5, 4)
-			[0x0200] = CONSTANTS.Y_PADDING + 4 * 8,
+			[0x0200] = CONSTANTS.Y_PADDING + 3 * 8,
 			[0x0201] = 0x04,
 			[0x0202] = 0x03,
-			[0x0203] = CONSTANTS.X_PADDING + 5 * 8,
+			[0x0203] = CONSTANTS.X_PADDING + 4 * 8,
 		}
 
+		local from_x = bit.rshift(memory.readbyte(0x0203) - CONSTANTS.X_PADDING, 3) + 1
+		local from_y = bit.rshift(memory.readbyte(0x0200) - CONSTANTS.Y_PADDING, 3) + 1
 		local expected_x, expected_y = 5, 6
-		local target_string = "" .. expected_x + 1 .. "" .. expected_y + 1
+		local target_string = "" .. expected_x .. "" .. expected_y
+		local from_string = "" .. from_x .. "" .. from_y
 		-- (5, 4) -> (5, 6)
-		Board:move_in_board_piece_to(memory, "65", target_string)
+		Board:move_in_board_piece_to(memory, from_string, target_string)
 
-		local board_y = bit.rshift(memory.readbyte(0x0200) - CONSTANTS.Y_PADDING, 3)
-		local board_x = bit.rshift(memory.readbyte(0x0203) - CONSTANTS.X_PADDING, 3)
+		local board_x = bit.rshift(memory.readbyte(0x0203) - CONSTANTS.X_PADDING, 3) + 1
+		local board_y = bit.rshift(memory.readbyte(0x0200) - CONSTANTS.Y_PADDING, 3) + 1
 
-		assert(board_x == expected_x)
-		assert(board_y == expected_y)
+		assert(board_x == expected_x, board_x .. "!=" ..expected_x)
+		assert(board_y == expected_y, board_y .. "!=" ..expected_y)
+	end)
+
+	it("Should kill a enemy piece", function ()
+
 	end)
 end)

@@ -61,7 +61,7 @@ while(true) do
 				if Board:can_move_piece_to(true, current_piece.type, current_piece.x, current_piece.y, board_x, board_y) then
 					local global_x = bit.lshift(bit.rshift(mouse.y, 3), 3) - 1
 					local global_y = bit.lshift(bit.rshift(mouse.x, 3), 3)
-					Board:move_piece_to(memory, current_piece.index-1, global_x, global_y)
+					Board:move_piece_to(memory, current_piece.index-1, global_y, global_x)
 				end
 				current_piece = {
 					index = 0,

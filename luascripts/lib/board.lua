@@ -102,10 +102,11 @@ Board = {
 }
 Board.__index = Board
 function Board:move_piece_to(memory, piece_index, x, y)
+	assert(piece_index >= 0)
 	local piece_mem = get_piece_addr(piece_index)
 
-	memory.writebyte(piece_mem, x)
-	memory.writebyte(piece_mem + 3, y)
+	memory.writebyte(piece_mem, y)
+	memory.writebyte(piece_mem + 3, x)
 end
 
 function Board:set_piece_attribute(memory, piece_index, attribute_byte)
@@ -238,24 +239,27 @@ end
 function Board:move_in_board_piece_to(memory, from, to)
 	-- change board position to global position
 	local from_x = tonumber(from:sub(1, 1)) - 1
+	-- from_x << 3 + padding to (1, _)
 	from_x = bit.lshift(from_x, 3) + CONSTANTS.X_PADDING
 	local from_y = tonumber(from:sub(2, 2)) - 1
+	-- from_y << 3 + padding to (_, 1)
 	from_y = bit.lshift(from_y, 3) + CONSTANTS.Y_PADDING
 
 	-- find piece index
 	local _, _, _, index = Board:get_piece_from(memory, from_x, from_y)
 
-	local to_x = tonumber(to:sub(2, 2)) - 1
-	to_x = bit.lshift(to_x, 3) + CONSTANTS.Y_PADDING
-	local to_y = tonumber(to:sub(1, 1)) - 1
-	to_y = bit.lshift(to_y, 3) + CONSTANTS.X_PADDING
+	local to_x = tonumber(to:sub(1, 1)) - 1
+	to_x = bit.lshift(to_x, 3) + CONSTANTS.X_PADDING
+	local to_y = tonumber(to:sub(2, 2)) - 1
+	to_y = bit.lshift(to_y, 3) + CONSTANTS.Y_PADDING
 
-	local _, _, _, other_piece_index = Board:get_piece_from(memory, to_y, to_x)
+	local _, _, _, other_piece_index = Board:get_piece_from(memory, to_x, to_y)
+
+	Board:move_piece_to(memory, index - 1, to_x, to_y)
+
 	if other_piece_index ~= 0 then
 		Board:kill_piece(memory, other_piece_index-1, MEMORY.board.pieces_len)
 	end
-
-	Board:move_piece_to(memory, index - 1, to_x, to_y)
 end
 
 function Board:kill_piece(memory, index, pieces_len)
@@ -277,8 +281,11 @@ function Board:kill_piece(memory, index, pieces_len)
 		local last_piece = memory.readbyte(last_piece_addr)
 		memory.writebyte(piece_addr, last_piece)
 		-- the memory api have some delay to execute
-		os.execute("sleep 0.25")
+		while memory.readbyte(piece_addr) ~= last_piece do
+		end
 		memory.writebyte(last_piece_addr, 0x00)
+		while memory.readbyte(last_piece_addr) ~= 0x00 do
+		end
 		last_piece_addr = last_piece_addr + 1
 		piece_addr = piece_addr + 1
 	end

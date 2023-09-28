@@ -1,4 +1,5 @@
 require "lib/mem_addr"
+require "lib/constants"
 
 if bit == nil then
 	bit = require("bit")
@@ -96,7 +97,8 @@ local function get_piece_addr(piece_index)
 end
 
 Board = {
-	is_player_turn = true
+	is_player_turn = true,
+	board = nil,
 }
 Board.__index = Board
 function Board:move_piece_to(memory, piece_index, x, y)
@@ -123,8 +125,8 @@ function Board:can_move_piece_to(is_player, piece_type, piece_x, piece_y, target
 		[2] = bishop_variations,
 		[3] = knight_variations,
 		[4] = rook_variations,
-		[6] = king_variations,
 		[5] = queen_variations,
+		[6] = king_variations,
 	}
 
 	local list_variations = moves_table[piece_type](is_player)
@@ -144,7 +146,142 @@ end
 
 function Board:AI_move()
 	-- .. do something
+	Board.copy_in_game_board()
+	Board.save_memory_board()
+	os.execute("cd ../ai; python ai.py")
+	-- os.execute("cd ../ai; cat chess.out")
+
+	local run_ai = "cd ../ai; cat chess.out"
+	local handle = io.popen(run_ai)
+	if handle ~= nil then
+		local result = handle:read("*a")
+		handle:close()
+		Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
+	end
 	Board.is_player_turn = true
+end
+
+function Board:copy_in_game_board()
+	-- print("copy_in_game_board: ", MEMORY.board.pieces_len)
+
+	print("piece_len: ", MEMORY.board.pieces_len)
+	local piece_addr = MEMORY.board.pieces_start
+
+	Board.board = {
+		{}, {}, {}, {}, {}, {}, {}, {},
+	}
+
+	for _=1, MEMORY.board.pieces_len, 1 do
+		local y = memory.readbyte(piece_addr)
+		piece_addr = piece_addr + 1
+		local piece_type = memory.readbyte(piece_addr)
+		piece_addr = piece_addr + 1
+		local color = bit.band(memory.readbyte(piece_addr), 0x03)
+		piece_addr = piece_addr + 1
+		local x = memory.readbyte(piece_addr)
+		piece_addr = piece_addr + 1
+
+		local board_x = bit.rshift(x - CONSTANTS.X_PADDING, 3) + 1
+		local board_y = bit.rshift(y - CONSTANTS.Y_PADDING, 3) + 1
+		local color_index = bit.rshift(color, 1) + 1
+		-- print(x, y)
+		-- print(board_x, board_y)
+		if piece_type >= 1 and piece_type <= 6 then
+			Board.board[board_y][board_x] = { piece_type, color_index }
+		end
+	end
+
+	-- print("result=", Board.board)
+end
+
+function Board:save_memory_board()
+	local conversion_table = {
+		[1] = { "p", "P" },
+		[2] = { "b", "B" },
+		[3] = { "n", "N" },
+		[4] = { "r", "R" },
+		[5] = { "q", "Q" },
+		[6] = { "k", "K" },
+	}
+	local file_string = ""
+	for i=1, 8, 1 do
+		local empty = 0
+		for j=1, 8, 1 do
+			local piece_set = Board.board[i][j]
+			if piece_set == nil then
+				empty = empty + 1
+			else
+				if empty > 0 then
+					file_string = file_string ..empty
+					empty = 0
+				end
+				-- print("piece_set: ", piece_set)
+				file_string = file_string .. conversion_table[piece_set[1]][piece_set[2]]
+			end
+		end
+		if empty > 0 then
+			file_string = file_string .. empty
+		end
+		if i ~= 8 then
+			file_string = file_string .. "/"
+		end
+	end
+
+	local filename = "../ai/board.in"
+	local file = io.open(filename, "w")
+	io.output(file)
+	io.write(file_string)
+	io.close(file)
+	print(file_string)
+end
+
+function Board:move_in_board_piece_to(memory, from, to)
+	-- change board position to global position
+	local from_x = tonumber(from:sub(1, 1)) - 1
+	from_x = bit.lshift(from_x, 3) + CONSTANTS.X_PADDING
+	local from_y = tonumber(from:sub(2, 2)) - 1
+	from_y = bit.lshift(from_y, 3) + CONSTANTS.Y_PADDING
+
+	-- find piece index
+	local _, _, _, index = Board:get_piece_from(memory, from_x, from_y)
+
+	local to_x = tonumber(to:sub(2, 2)) - 1
+	to_x = bit.lshift(to_x, 3) + CONSTANTS.Y_PADDING
+	local to_y = tonumber(to:sub(1, 1)) - 1
+	to_y = bit.lshift(to_y, 3) + CONSTANTS.X_PADDING
+
+	local _, _, _, other_piece_index = Board:get_piece_from(memory, to_y, to_x)
+	if other_piece_index ~= 0 then
+		Board:kill_piece(memory, other_piece_index-1, MEMORY.board.pieces_len)
+	end
+
+	Board:move_piece_to(memory, index - 1, to_x, to_y)
+end
+
+function Board:kill_piece(memory, index, pieces_len)
+	local piece_addr = get_piece_addr(index)
+	local last_piece_addr = get_piece_addr(pieces_len-1)
+
+	MEMORY.board.pieces_len = MEMORY.board.pieces_len - 1
+
+	if index == pieces_len-1 then
+		for _ = 1, 4, 1 do
+			memory.writebyte(last_piece_addr, 0x00)
+			last_piece_addr = last_piece_addr + 1
+		end
+		return
+	end
+
+	-- swap last_position and index_piece
+	for _=1, 4, 1 do
+		local last_piece = memory.readbyte(last_piece_addr)
+		memory.writebyte(piece_addr, last_piece)
+		-- the memory api have some delay to execute
+		os.execute("sleep 0.25")
+		memory.writebyte(last_piece_addr, 0x00)
+		last_piece_addr = last_piece_addr + 1
+		piece_addr = piece_addr + 1
+	end
 end
 
 -- TODO: remover
@@ -198,8 +335,8 @@ end
 
 function Board:get_piece_from(memory, x, y)
 	local piece_type = 0
-	local board_x = bit.rshift(x - 0x58, 3) + 1
-	local board_y = bit.rshift(y - 0x47, 3) + 1
+	local board_x = bit.rshift(x - CONSTANTS.X_PADDING, 3) + 1
+	local board_y = bit.rshift(y - CONSTANTS.Y_PADDING, 3) + 1
 
 	SIZE = 8
 	local piece_addr = MEMORY.board.pieces_start
@@ -218,11 +355,14 @@ function Board:get_piece_from(memory, x, y)
 
 		if is_x_ok and is_y_ok then
 			piece_type = current_piece_type
-			board_x = bit.rshift(piece_x - 0x58, 3) + 1
-			board_y = bit.rshift(piece_y - 0x47, 3) + 1
+			board_x = bit.rshift(piece_x - CONSTANTS.X_PADDING, 3) + 1
+			board_y = bit.rshift(piece_y - CONSTANTS.Y_PADDING, 3) + 1
 			break
 		end
 		i = i + 1
+	end
+	if piece_type == 0 then
+		i = 0
 	end
 
 	return piece_type, board_x, board_y, i

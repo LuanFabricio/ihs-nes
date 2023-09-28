@@ -113,9 +113,9 @@ palette:
 	.byte $0f, $09, $19, $29
 
 	.byte $0f, $00, $10, $20
-	.byte $0f, $01, $21, $31
+	.byte $0f, $2d, $10, $20
 	.byte $0f, $06, $16, $26
-	.byte $0f, $09, $19, $29
+	.byte $0f, $10, $2d, $20
 ;; .incbin "assets/palettes.pal"
 
 sprites:

@@ -16,6 +16,7 @@ local inputs = {
 }
 
 local board = require 'lib.board'
+local input = require 'lib.input'
 
 local current_piece = {
 	index = 0,
@@ -41,32 +42,12 @@ local current_piece = {
 
 -- local p_input = math.random(4)
 while(true) do
-	local mouse = zapper.read()
+	local zapper_info = zapper.read()
 
 	if not Board.is_player_turn then
 		Board:AI_move(memory)
-	else if mouse.fire == 1 then
-			print("CURRENT_PIECE: ", current_piece)
-			print("is_player_turn: ", Board.is_player_turn)
-			local piece_type, board_x, board_y, piece_index = board:get_piece_from(memory, mouse.x, mouse.y)
-			if piece_type ~= 0 then
-				current_piece.index = piece_index
-				current_piece.type = piece_type
-				current_piece.x = board_x
-				current_piece.y = board_y
-			else
-				if Board:can_move_piece_to(true, current_piece.type, current_piece.x, current_piece.y, board_x, board_y) then
-					local global_x = bit.lshift(bit.rshift(mouse.y, 3), 3) - 1
-					local global_y = bit.lshift(bit.rshift(mouse.x, 3), 3)
-					Board:move_piece_to(memory, current_piece.index-1, global_y, global_x)
-				end
-				current_piece = {
-					index = 0,
-					type = 0,
-					x = 0,
-					y = 0,
-				}
-			end
+	else if zapper_info.fire == 1 then
+			current_piece = Input:handle_player_click(zapper_info, memory, board, current_piece)
 		end
 	end
 

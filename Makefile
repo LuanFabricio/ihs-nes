@@ -18,4 +18,4 @@ run:
 	fceux --loadlua luascripts/main.lua $(FILENAME).nes
 
 test-scripts:
-	cd luascripts; busted tests/*/*
+	cd luascripts; busted tests/*/*/*

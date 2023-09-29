@@ -102,7 +102,7 @@ Board = {
 }
 Board.__index = Board
 function Board:move_piece_to(memory, piece_index, x, y)
-	assert(piece_index >= 0)
+	assert(piece_index >= 0, "piece_index = " .. piece_index)
 	local piece_mem = get_piece_addr(piece_index)
 
 	memory.writebyte(piece_mem, y)
@@ -145,10 +145,10 @@ function Board:can_move_piece_to(is_player, piece_type, piece_x, piece_y, target
 	return false
 end
 
-function Board:AI_move()
+function Board:AI_move(memory)
 	-- .. do something
-	Board.copy_in_game_board()
-	Board.save_memory_board()
+	Board.copy_in_game_board(Board, memory)
+	Board.save_memory_board(Board)
 	os.execute("cd ../ai; python ai.py")
 	-- os.execute("cd ../ai; cat chess.out")
 
@@ -162,7 +162,7 @@ function Board:AI_move()
 	Board.is_player_turn = true
 end
 
-function Board:copy_in_game_board()
+function Board:copy_in_game_board(memory)
 	-- print("copy_in_game_board: ", MEMORY.board.pieces_len)
 
 	print("piece_len: ", MEMORY.board.pieces_len)

@@ -29,9 +29,6 @@ local current_piece = {
 -- board:draw_possible_moves(memory, true, 1, 3, 3)
 -- board:draw_possible_moves(memory, true, 4, 4, 6)
 
-Board.copy_in_game_board()
-Board.save_memory_board()
-os.execute("cd ../ai; python ai.py")
 -- os.execute("cd ../ai; cat chess.out")
 
 -- local run_ai = "cd ../ai; cat chess.out"
@@ -47,7 +44,7 @@ while(true) do
 	local mouse = zapper.read()
 
 	if not Board.is_player_turn then
-		Board:AI_move()
+		Board:AI_move(memory)
 	else if mouse.fire == 1 then
 			print("CURRENT_PIECE: ", current_piece)
 			print("is_player_turn: ", Board.is_player_turn)

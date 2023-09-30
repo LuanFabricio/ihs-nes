@@ -12,16 +12,16 @@ local function knight_variations()
 end
 
 local function add_player_pawn_moves(Board, avaliable_positions, piece_x, piece_y)
+	if Board.board[piece_y - 1][piece_x] ~= nil then
+		table.remove(avaliable_positions, 1)
+	end
+
 	if Board.board[piece_y - 1][piece_x + 1] ~= nil then
 		table.insert(avaliable_positions, { piece_x + 1, piece_y - 1 })
 	end
 
 	if Board.board[piece_y - 1][piece_x - 1] ~= nil then
 		table.insert(avaliable_positions, { piece_x - 1, piece_y - 1 })
-	end
-
-	if Board.board[piece_y - 1][piece_x] ~= nil then
-		table.remove(avaliable_positions, 1)
 	end
 
 	if piece_y == 7 then
@@ -214,10 +214,16 @@ function Board:move_piece_to(memory, piece_index, x, y)
 	memory.writebyte(piece_mem + 3, x)
 
 	local piece_type = memory.readbyte(piece_mem + 1)
+	local is_player = bit.band(memory.readbyte(piece_mem + 2), 3) == 3
 	local board_y = bit.rshift(y - CONSTANTS.Y_PADDING, 3) + 1
 
-	if piece_type == 1 and board_y == 1 then
-		memory.writebyte(piece_mem + 1, 5)
+	if piece_type == 1 then
+			if is_player and board_y == 1 then
+				memory.writebyte(piece_mem + 1, 5)
+			else if board_y == 8 then
+				memory.writebyte(piece_mem + 1, 5)
+			end
+		end
 	end
 end
 
@@ -285,7 +291,12 @@ function Board:AI_move(memory)
 	-- .. do something
 	Board.copy_in_game_board(Board, memory)
 	Board.save_memory_board(Board)
-	os.execute("cd ../ai; python ai.py")
+	local handle = io.popen("cd ../ai; python ai.py")
+	assert(handle ~= nil)
+	local result = handle:read("*a")
+	print("run AI: ", result)
+	handle:close()
+
 	-- os.execute("cd ../ai; cat chess.out")
 
 	local run_ai = "cd ../ai; cat chess.out"
@@ -293,10 +304,27 @@ function Board:AI_move(memory)
 	if handle ~= nil then
 		local result = handle:read("*a")
 		print("AI move: ", result)
-		handle:close()
 		Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
+		handle:close()
+		Board:copy_in_game_board(memory)
 	end
 	Board.is_player_turn = true
+end
+
+function Board:count_pieces(memory)
+	local pieces_len = 0
+	local current_address = MEMORY.board.pieces_start
+
+	local is_valid_piece = memory.readbyte(current_address) ~= 0 and memory.readbyte(current_address + 1) ~= 0 and memory.readbyte(current_address + 2) ~= 0 and memory.readbyte(current_address + 3) ~= 0
+
+	while is_valid_piece do
+		current_address = current_address + 4
+		pieces_len = pieces_len + 1
+
+		is_valid_piece = memory.readbyte(current_address) ~= 0 and memory.readbyte(current_address + 1) ~= 0 and memory.readbyte(current_address + 2) ~= 0 and memory.readbyte(current_address + 3) ~= 0
+	end
+
+	return pieces_len
 end
 
 function Board:copy_in_game_board(memory)

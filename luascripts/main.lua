@@ -25,10 +25,15 @@ local current_piece = {
 	y = 0,
 }
 
-Board:init_board(memory)
+-- Board:init_board(memory)
+Board.pieces_len = Board:count_pieces(memory)
 Board:copy_in_game_board(memory)
+print(Board.board)
 
 while(true) do
+	Board.pieces_len = Board:count_pieces(memory)
+	Board:copy_in_game_board(memory)
+
 	if not Board:check_king(false) then
 		print("PLAYER WINS!")
 		break

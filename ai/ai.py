@@ -16,6 +16,7 @@ class AI:
 
         self.ai_chess = AIChess()
         self.ai_chess.board = chess.Board(self.board)
+        self.ai_chess.board.turn = False
 
     def make_a_move(self):
         assert(self.ai_chess != None)

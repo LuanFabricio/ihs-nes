@@ -15,8 +15,8 @@ local inputs = {
 	{ down = true },
 }
 
-local board = require 'lib.board'
-local input = require 'lib.input'
+require 'lib.board'
+require 'lib.input'
 
 local current_piece = {
 	index = 0,
@@ -25,29 +25,26 @@ local current_piece = {
 	y = 0,
 }
 
--- board:draw_possible_moves(memory, false, 1, 1, 1)
--- board:draw_possible_moves(memory, false, 1, 3, 3)
--- board:draw_possible_moves(memory, true, 1, 3, 3)
--- board:draw_possible_moves(memory, true, 4, 4, 6)
+Board:init_board(memory)
+Board:copy_in_game_board(memory)
 
--- os.execute("cd ../ai; cat chess.out")
-
--- local run_ai = "cd ../ai; cat chess.out"
--- local handle = io.popen(run_ai)
--- local result = handle:read("*a")
--- handle:close()
--- print(result)
--- Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
--- Board.copy_in_game_board()
-
--- local p_input = math.random(4)
 while(true) do
+	if not Board:check_king(false) then
+		print("PLAYER WINS!")
+		break
+	else
+		if not Board:check_king(true) then
+			print("AI WINS!")
+			break
+		end
+	end
+
 	local zapper_info = zapper.read()
 
 	if not Board.is_player_turn then
 		Board:AI_move(memory)
 	else if zapper_info.fire == 1 then
-			current_piece = Input:handle_player_click(zapper_info, memory, board, current_piece)
+			current_piece = Input:handle_player_click(zapper_info, memory, Board, current_piece)
 		end
 	end
 

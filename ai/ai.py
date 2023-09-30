@@ -27,7 +27,7 @@ class AI:
             raise("Erro! Nenhum movimento válido.")
 
         for move in move_arr:
-            if len(move) == 4:
+            if len(move):
                 self.save_move(move)
                 print(self.ai_chess.board)
                 print("="*15)
@@ -36,7 +36,7 @@ class AI:
                 break
 
     def save_move(self, move):
-        assert(len(move) == 4)
+        assert(len(move) <= 5)
         print(f"move: {move}")
         BASE_CHAR = ord('a')
         file = open("chess.out", "w")

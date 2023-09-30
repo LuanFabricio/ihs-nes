@@ -13,6 +13,8 @@ describe("move_in_board_piece_to", function ()
 			[0x0202] = 0x03,
 			[0x0203] = CONSTANTS.X_PADDING + 4 * 8,
 		}
+
+		Board.pieces_len = 1
 		memory.MEMORY_ARR = MEMORY_ARR
 
 		local from_x = bit.rshift(memory.readbyte(0x0203) - CONSTANTS.X_PADDING, 3) + 1

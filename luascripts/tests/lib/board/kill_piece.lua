@@ -18,6 +18,7 @@ describe("kill_piece", function ()
 			[0x0207] = 0x6f,
 		}
 
+		Board.pieces_len = 2
 		memory.MEMORY_ARR = MEMORY_ARR
 		Board:kill_piece(memory, 0, 2)
 		local still_there = MEMORY_ARR[0x0200] == original_piece[1] and	MEMORY_ARR[0x0201] == original_piece[2] and MEMORY_ARR[0x0202] == original_piece[3] and	MEMORY_ARR[0x0203] == original_piece[4]
@@ -68,6 +69,7 @@ describe("kill_piece", function ()
 			[0x020b] = removed_piece[4],
 		}
 
+		Board.pieces_len = 3
 		memory.MEMORY_ARR = MEMORY_ARR
 		Board:kill_piece(memory, 2, 3)
 		for i=0, 3, 1 do

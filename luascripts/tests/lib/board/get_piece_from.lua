@@ -15,6 +15,7 @@ describe("get_piece_from", function ()
 		local expected_x = bit.rshift(x - CONSTANTS.X_PADDING, 3) + 1
 		local expected_y = bit.rshift(y - CONSTANTS.Y_PADDING, 3) + 1
 
+		Board.pieces_len = 0
 		local _, board_x, board_y, _ = Board:get_piece_from(memory, x, y)
 
 		assert(board_x, expected_x)

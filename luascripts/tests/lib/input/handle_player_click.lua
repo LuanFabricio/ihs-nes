@@ -28,6 +28,7 @@ describe("handle_player_click", function ()
 			y = 0,
 		}
 
+		Board.pieces_len = 1
 		current_piece = Input:handle_player_click(zapper.read(), memory, Board, current_piece)
 
 		local expected_x = 5

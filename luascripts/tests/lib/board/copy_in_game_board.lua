@@ -21,6 +21,7 @@ describe("copy_in_game_board", function ()
 
 		memory.MEMORY_ARR = MEMORY_ARR
 
+		Board.pieces_len = 2
 		Board:copy_in_game_board(memory)
 
 		local expected_not_nil = { { 4, 8, memory.readbyte(0x0201)}, { 2, 1, memory.readbyte(0x0205) }}

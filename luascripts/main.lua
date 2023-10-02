@@ -15,7 +15,8 @@ local inputs = {
 	{ down = true },
 }
 
-local board = require 'lib.board'
+require 'lib.board'
+require 'lib.input'
 
 local current_piece = {
 	index = 0,
@@ -24,54 +25,44 @@ local current_piece = {
 	y = 0,
 }
 
--- board:draw_possible_moves(memory, false, 1, 1, 1)
--- board:draw_possible_moves(memory, false, 1, 3, 3)
--- board:draw_possible_moves(memory, true, 1, 3, 3)
--- board:draw_possible_moves(memory, true, 4, 4, 6)
+-- Board:init_board(memory)
+Board.pieces_len = Board:count_pieces(memory)
+Board:copy_in_game_board(memory)
+print(Board.board)
 
-Board.copy_in_game_board()
-Board.save_memory_board()
-os.execute("cd ../ai; python ai.py")
--- os.execute("cd ../ai; cat chess.out")
+local last_ai_move = ''
+local winner = ''
 
--- local run_ai = "cd ../ai; cat chess.out"
--- local handle = io.popen(run_ai)
--- local result = handle:read("*a")
--- handle:close()
--- print(result)
--- Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
--- Board.copy_in_game_board()
-
--- local p_input = math.random(4)
 while(true) do
-	local mouse = zapper.read()
+	Board.pieces_len = Board:count_pieces(memory)
+	Board:copy_in_game_board(memory)
 
-	if not Board.is_player_turn then
-		Board:AI_move()
-	else if mouse.fire == 1 then
-			print("CURRENT_PIECE: ", current_piece)
-			print("is_player_turn: ", Board.is_player_turn)
-			local piece_type, board_x, board_y, piece_index = board:get_piece_from(memory, mouse.x, mouse.y)
-			if piece_type ~= 0 then
-				current_piece.index = piece_index
-				current_piece.type = piece_type
-				current_piece.x = board_x
-				current_piece.y = board_y
-			else
-				if Board:can_move_piece_to(true, current_piece.type, current_piece.x, current_piece.y, board_x, board_y) then
-					local global_x = bit.lshift(bit.rshift(mouse.y, 3), 3) - 1
-					local global_y = bit.lshift(bit.rshift(mouse.x, 3), 3)
-					Board:move_piece_to(memory, current_piece.index-1, global_y, global_x)
-				end
-				current_piece = {
-					index = 0,
-					type = 0,
-					x = 0,
-					y = 0,
-				}
-			end
+	if not Board:check_king(false) then
+		print("PLAYER WINS!")
+		winner = "PLAYER WINS!"
+		break
+	else
+		if not Board:check_king(true) then
+			print()
+			winner = "AI WINS!"
+			break
 		end
 	end
 
+	local zapper_info = zapper.read()
+
+	if not Board.is_player_turn then
+		last_ai_move = Board:AI_move(memory)
+	else if zapper_info.fire == 1 then
+			current_piece = Input:handle_player_click(zapper_info, memory, Board, current_piece)
+		end
+	end
+
+	gui.text(16, 16, "AI move: " .. last_ai_move)
+	emu.frameadvance()
+end
+
+while true do
+	gui.text(104, 100, winner)
 	emu.frameadvance()
 end

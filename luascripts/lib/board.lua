@@ -299,6 +299,7 @@ function Board:AI_move(memory)
 
 	-- os.execute("cd ../ai; cat chess.out")
 
+	local move = ""
 	local run_ai = "cd ../ai; cat chess.out"
 	local handle = io.popen(run_ai)
 	if handle ~= nil then
@@ -307,8 +308,12 @@ function Board:AI_move(memory)
 		Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
 		handle:close()
 		Board:copy_in_game_board(memory)
+		move = "(" .. result:sub(1, 1) ..  ", " .. result:sub(2, 2) .. ")"
+		move = move .. " -> "
+		move = move .. "(" .. result:sub(3, 3) ..  ", " .. result:sub(4, 4) .. ")"
 	end
 	Board.is_player_turn = true
+	return move
 end
 
 function Board:count_pieces(memory)

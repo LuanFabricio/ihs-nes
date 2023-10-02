@@ -9,7 +9,7 @@ local function draw_winner_message(winner)
 end
 
 local function draw_reset_message()
-	gui.text(48, 112, "Press Start to reset the game.")
+	gui.text(48, 112, "Press Start to restart the game.")
 end
 
 require 'lib.board'

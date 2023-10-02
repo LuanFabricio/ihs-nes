@@ -303,6 +303,7 @@ function Board:AI_move(memory)
 	local run_ai = "cd ../ai; cat chess.out"
 	local handle = io.popen(run_ai)
 	if handle ~= nil then
+		-- TODO: lidar com o movimento claim_draw
 		local result = handle:read("*a")
 		print("AI move: ", result)
 		Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))

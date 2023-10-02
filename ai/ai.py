@@ -26,8 +26,9 @@ class AI:
         if len(move_arr) <= 0:
             raise("Erro! Nenhum movimento válido.")
 
+        # TODO: Retornar apenas o primeiro movimento do array
         for move in move_arr:
-            if len(move):
+            if len(move) <= 5:
                 self.save_move(move)
                 print(self.ai_chess.board)
                 print("="*15)

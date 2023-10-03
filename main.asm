@@ -15,31 +15,48 @@
 .endproc
 
 .proc nmi_handler
+	inc $ff
+	lda $ff
+	cmp #$10
+	bpl draw_hud
+
+draw_pieces:
 	;; copy memory from $0200-$02ff to OAM
 	lda #$00
 	sta OAMADDR
 	lda #$02
 	sta OAMDMA
+	lda #$ff
+	jmp draw_end
 
+draw_hud:
+;;	;; copy memory from $0300-$03ff to OAM
+;;	lda #$00
+;;	sta OAMADDR
+;;	lda #$03
+;;	sta OAMDMA
+
+draw_end:
+lock_scroll:
 	lda #$00
 	sta PPUSCROLL
 	sta PPUSCROLL
 
-	jsr check_player_win
-	lda $00
-	and #%10000000
-	beq check_turn
-	rti
+;;	jsr check_player_win
+;;	lda $00
+;;	and #%10000000
+;;	beq check_turn
+;;	rti
 
-check_turn:
-	lda $00
-	and #$01
-	beq lbl_move_player
-lbl_move_enemy:
-	; jsr move_enemy
-	jmp nmi_end
-lbl_move_player:
-	jsr move_player
+;; check_turn:
+;; 	lda $00
+;; 	and #$01
+;; 	beq lbl_move_player
+;; lbl_move_enemy:
+;; 	; jsr move_enemy
+;; 	jmp nmi_end
+;; lbl_move_player:
+;; 	jsr move_player
 
 nmi_end:
 	rti
@@ -61,6 +78,16 @@ nmi_end:
 	;; set player 2 move delay to zero
 	lda #$00
 	sta $03
+
+	;; loading marker sprite
+	lda #$4f
+	sta $0300
+	lda #$11
+	sta $0301
+	lda #$00
+	sta $0302
+	lda #$55
+	sta $0303
 
 	;; loading palette
 	ldx PPUSTATUS

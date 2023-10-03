@@ -9,7 +9,10 @@ MEMORY = {
 			attr = 0x0202,
 			x = 0x0203,
 		},
-	}
+	},
+	cursor = {
+		start = 0x0300,
+	},
 }
 
 return MEMORY

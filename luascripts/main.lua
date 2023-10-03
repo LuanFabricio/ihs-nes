@@ -54,6 +54,8 @@ while(true) do
 		elseif zapper_info.fire == 1 then
 			current_piece = Input:handle_player_click(zapper_info, memory, Board, current_piece)
 		end
+
+		current_piece = Input:handle_player_joypad(joypad.read(1), memory, Board, current_piece)
 	end
 
 	gui.text(16, 16, "AI move: " .. last_ai_move)

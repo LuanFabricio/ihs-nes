@@ -3,6 +3,8 @@
 # O que é?
 Um jogo de xadrez feito para o Nintendo Entertainment System (NES). Esse jogo não só utiliza o código assemly 6502 da ROM para rodar, ele também utiliza scripts feitos em Lua para controlar o tabuleiro e Python como inteligência artificial.
 
+# Demo
+
 # Como rodar o jogo?
 Primeiro, é necessário instalar as dependências, para apenas rodar o jogo basta instalar o pacote `AI-Chess` e o `cc65`. Depois basta instalar o emulador `fceux` e executá-lo.
 

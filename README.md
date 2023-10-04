@@ -1,7 +1,7 @@
 # IHS NES
 
 # O que é?
-Um jogo de xadrez feito para o Nintendo Entertainment System (NES). Esse jogo não só utiliza o código assemly 6502 da ROM para rodar, ele também utiliza scripts feitos em Lua para controlar o tabuleiro e Python como inteligência artificial.
+Um jogo de xadrez feito para o Nintendo Entertainment System (NES). Esse jogo não só utiliza o código **Assemly 6502** da ROM para rodar, ele também utiliza scripts feitos em **Lua** para controlar o tabuleiro e **Python** como inteligência artificial.
 
 # Demo
 https://github.com/LuanFabricio/ihs-nes/assets/47309921/a1ef7bc5-3bec-4b7a-aa6f-41c0c84e57bf
@@ -26,6 +26,15 @@ Depois disso você deverá ter um arquivo que se chama `main.nes` na pasta do pr
 Antes de tentar rodar o jogo você deve ter certeza que o emulador está instalando. Caso não esteja procure o nome do pacote na sua distribuição linux ou baixe a versão do próprio [site](https://fceux.com/web/download.html) do `fceux`.
 
 Para rodar o jogo basta utilizar o comando `make run`.
+
+Caso ocorra algum erro e o emulador crashe tente uma das seguintes opções:
+1. Abrir o emulador utilizando comandos de terminal.
+    1. Abra o terminal e acesse a pasta do projeto.
+    2. Inicie o emulador com os scripts de Lua carregados, executando o comando `fceux --loadlua luascripts/main.lua`
+2. Abrir o emulador utilizando atalhos do próprio sistema operacional.
+    1. Abra o emulador utilizando o atalho gerado durante a instalação.
+    2. Carregue os scripts de Lua acessando `File -> Load Lua Script`, depois clique em Browse e procure a pasta do projeto, acesse o arquivo `luascripts/main.lua` e clique no botão **Start**.
+    3. Carregue a ROM acessando `File -> Open ROM`.
 
 # Desenvolvimento
 Caso você queria contribuir para o projeto, é necessário instalar algumas dependências que são utilizadas na execução dos testes.

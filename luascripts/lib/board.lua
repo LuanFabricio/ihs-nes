@@ -297,21 +297,21 @@ function Board:AI_move(memory)
 	print("run AI: ", result)
 	handle:close()
 
-	-- os.execute("cd ../ai; cat chess.out")
-
 	local move = ""
 	local run_ai = "cd ../ai; cat chess.out"
 	local handle = io.popen(run_ai)
 	if handle ~= nil then
-		-- TODO: lidar com o movimento claim_draw
-		local result = handle:read("*a")
-		print("AI move: ", result)
-		Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
-		handle:close()
-		Board:copy_in_game_board(memory)
-		move = "(" .. result:sub(1, 1) ..  ", " .. result:sub(2, 2) .. ")"
-		move = move .. " -> "
-		move = move .. "(" .. result:sub(3, 3) ..  ", " .. result:sub(4, 4) .. ")"
+		result = handle:read("*a")
+		if result ~= "claim_draw" then
+			Board:move_in_board_piece_to(memory, result:sub(1, 2), result:sub(3, 4))
+			handle:close()
+			Board:copy_in_game_board(memory)
+			move = "(" .. result:sub(1, 1) ..  ", " .. result:sub(2, 2) .. ")"
+			move = move .. " -> "
+			move = move .. "(" .. result:sub(3, 3) ..  ", " .. result:sub(4, 4) .. ")"
+		else
+			move = "claim draw"
+		end
 	end
 	Board.is_player_turn = true
 	return move

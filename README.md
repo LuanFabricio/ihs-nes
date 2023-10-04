@@ -45,7 +45,13 @@ make test-scripts
 que irá rodar todos os testes feitos na pasta `luascripts/tests`.
 
 # Todas as dependências do projeto
-- `AI-Chess`
 - `cc65`
+- `AI-Chess`
+    - Utilizando a versão `3.9.18` do python.
 - `bitop`
+    - Utilizando a versão `5.1.5` do Lua.
 - `busted`
+    - Utilizando a versão `5.1.5` do Lua.
+
+<br>
+Atenção! Caso você utilize o gerenciador de versões `asdf-vm`, por favor, verifique se todas as versões das linguagens listadas no arquivo `.tool-versions` estão instaladas.

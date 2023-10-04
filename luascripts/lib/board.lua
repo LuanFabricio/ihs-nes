@@ -462,6 +462,50 @@ function Board:kill_piece(memory, index, pieces_len)
 	end
 end
 
+function Board:blink_cursor(memory, board_x, board_y)
+	local cursor_delay = memory.readbyte(0x0100)
+	cursor_delay = cursor_delay + 1
+	memory.writebyte(0x0100, cursor_delay)
+
+	local delay = 0x0f
+	if cursor_delay ~= delay then
+		return
+	end
+	memory.writebyte(0x0100, 0x00)
+
+	local global_x = CONSTANTS.X_PADDING + bit.lshift(board_x - 1, 3)
+	local global_y = CONSTANTS.Y_PADDING + bit.lshift(board_y - 1, 3)
+
+	local piece_type, _, _, piece_index = Board:get_piece_from(memory, global_x, global_y)
+
+	if piece_type < 1 and piece_type > 6 then
+		return
+	end
+
+	local cursor_index = 0x0104
+	if piece_index ~= 0 then
+		local current_piece_address = get_piece_addr(piece_index - 1)
+		local final_piece_address = 0x0100
+		for i=1, 2, 1 do
+			memory.writebyte(final_piece_address + i, memory.readbyte(current_piece_address + i))
+		end
+		memory.writebyte(current_piece_address + 1, 0x11)
+		memory.writebyte(current_piece_address + 2, 0x00)
+
+		memory.writebyte(cursor_index, piece_index)
+	else
+		piece_index = memory.readbyte(cursor_index)
+
+		local current_piece_address = 0x0100
+		local piece_address = get_piece_addr(piece_index - 1)
+		for i = 1, 2, 1 do
+			memory.writebyte(piece_address + i, memory.readbyte(current_piece_address + i))
+		end
+
+	end
+
+end
+
 -- TODO: remover
 function Board:draw_possible_moves(memory, is_player, piece_type, x, y)
 	assert(piece_type <= 6 and piece_type > 0, "Erro! Wrong piece type.")

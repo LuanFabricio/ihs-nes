@@ -47,6 +47,7 @@ while(true) do
 		draw_winner_message("AI")
 		draw_reset_message()
 	else
+		Board:blink_cursor(memory, 4, 7)
 		local zapper_info = zapper.read()
 
 		if not Board.is_player_turn then

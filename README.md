@@ -53,5 +53,4 @@ que irá rodar todos os testes feitos na pasta `luascripts/tests`.
 - `busted`
     - Utilizando a versão `5.1.5` do Lua.
 
-<br>
 Atenção! Caso você utilize o gerenciador de versões `asdf-vm`, por favor, verifique se todas as versões das linguagens listadas no arquivo `.tool-versions` estão instaladas.

@@ -26,27 +26,26 @@ class AI:
         if len(move_arr) <= 0:
             raise("Erro! Nenhum movimento válido.")
 
-        # TODO: Retornar apenas o primeiro movimento do array
-        for move in move_arr:
-            if len(move) <= 5:
-                self.save_move(move)
-                print(self.ai_chess.board)
-                print("="*15)
-                self.ai_chess.makeChessMove(move)
-                print(self.ai_chess.board)
-                break
+        move = move_arr[0]
+        self.save_move(move)
+        print(self.ai_chess.board)
+        print("="*15)
 
     def save_move(self, move):
-        assert(len(move) <= 5)
         print(f"move: {move}")
         BASE_CHAR = ord('a')
+
         file = open("chess.out", "w")
-        char_list = list(move)
-        char_list[0] = str(ord(char_list[0]) - BASE_CHAR + 1)
-        char_list[1] = str(9 - int(char_list[1]))
-        char_list[2] = str(ord(char_list[2]) - BASE_CHAR + 1)
-        char_list[3] = str(9 - int(char_list[3]))
-        file.write(''.join(char_list))
+
+        if move != "claim_draw":
+            char_list = list(move)
+            char_list[0] = str(ord(char_list[0]) - BASE_CHAR + 1)
+            char_list[1] = str(9 - int(char_list[1]))
+            char_list[2] = str(ord(char_list[2]) - BASE_CHAR + 1)
+            char_list[3] = str(9 - int(char_list[3]))
+            move = ''.join(char_list)
+
+        file.write(move)
         file.close()
 
 

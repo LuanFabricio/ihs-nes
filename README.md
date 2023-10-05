@@ -28,13 +28,14 @@ Antes de tentar rodar o jogo você deve ter certeza que o emulador está instala
 Para rodar o jogo basta utilizar o comando `make run`.
 
 Caso ocorra algum erro e o emulador crashe tente uma das seguintes opções:
-1. Abrir o emulador utilizando comandos de terminal.
+1. Abrir o emulador no terminal com os scripts carregados.
     1. Abra o terminal e acesse a pasta do projeto.
     2. Inicie o emulador com os scripts de Lua carregados, executando o comando `fceux --loadlua luascripts/main.lua`
-2. Abrir o emulador utilizando atalhos do próprio sistema operacional.
-    1. Abra o emulador utilizando o comando `fceux`.
-    2. Carregue os scripts de Lua acessando `File -> Load Lua Script`, depois clique em Browse e procure a pasta do projeto, acesse o arquivo `luascripts/main.lua` e clique no botão **Start**.
-    3. Carregue a ROM acessando `File -> Open ROM`.
+2. Abrir o emulador no terminal.
+    1. Abra o terminal e acesse a pasta do projeto.
+    2. Abra o emulador utilizando o comando `fceux`.
+    3. Carregue os scripts de Lua acessando `File -> Load Lua Script`, depois clique em Browse e procure a pasta do projeto, acesse o arquivo `luascripts/main.lua` e clique no botão **Start**.
+    4. Carregue a ROM acessando `File -> Open ROM`.
 
 # Desenvolvimento
 Caso você queria contribuir para o projeto, é necessário instalar algumas dependências que são utilizadas na execução dos testes.

@@ -67,3 +67,6 @@ que irá rodar todos os testes feitos na pasta `luascripts/tests`.
     - Utilizando a versão `5.1.5` do Lua.
 
 Atenção! Caso você utilize o gerenciador de versões `asdf-vm`, por favor, verifique se todas as versões das linguagens listadas no arquivo `.tool-versions` estão instaladas.
+
+# Referências
+Todas as referências utilizadas estão no arquivo [REFERENCES.md](https://github.com/LuanFabricio/ihs-nes/blob/main/REFERENCES.md).

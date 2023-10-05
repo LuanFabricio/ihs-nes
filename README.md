@@ -45,6 +45,10 @@ Caso você queria contribuir para o projeto, é necessário instalar algumas dep
 - `busted`
     - Para instalar o pacote basta seguir as instruções do [repositório](https://github.com/lunarmodules/busted) do projeto.
     - Caso você queria instalar com o **luarocks** basta usar o comando `luarocks install busted`.
+    - Observação! Se o `busted` não ficar no seu `PATH`
+        1. Procure o caminho do binário utilizando o comando `luarocks show busted`.
+        2. Adicione o caminho do binário no `PATH`, utilizando o comando `export PATH=/caminho/do/busted:$PATH`.
+        3. Caso você queira que o último comando persista, o adicione no seu `.zshrc` ou `.bashrc`.
 
 ## Testando o projeto
 Atualmente o projeto só possui testes para o código feito em lua, então o único comando de teste que ele possui é o

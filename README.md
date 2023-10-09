@@ -1,4 +1,4 @@
-# IHS NES
+# Chess4NES
 
 # O que é?
 Um jogo de xadrez feito para o Nintendo Entertainment System (NES). Esse jogo não só utiliza o código **Assemly 6502** da ROM para rodar, ele também utiliza scripts feitos em **Lua** para controlar o tabuleiro e **Python** como inteligência artificial.
